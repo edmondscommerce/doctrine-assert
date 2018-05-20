@@ -1,0 +1,10 @@
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd">
+    <php>
+        <env name="DB_USER" value="test"/>
+        <env name="DB_PASS" value="password"/>
+        <env name="DB_HOST" value="localhost"/>
+        <env name="DB_NAME" value="doctrine_assert_test"/>
+    </php>
+</phpunit>

@@ -4,37 +4,11 @@ namespace BenRowan\DoctrineAssert;
 
 use BenRowan\DoctrineAssert\Constraints\DatabaseCount;
 use BenRowan\DoctrineAssert\Constraints\DatabaseHas;
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\TestCase;
 
 trait DoctrineAssertTrait
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * Set the entity manager to be used by Doctrine Assert.
-     *
-     * @param EntityManager $entityManager
-     */
-    protected function setEntityManager(EntityManager $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * Get the current entity manager.
-     *
-     * @return EntityManager
-     */
-    protected function getEntityManager(): EntityManager
-    {
-        return $this->entityManager;
-    }
-
     /**
      * Assert that the database has one or more entities with this data.
      *

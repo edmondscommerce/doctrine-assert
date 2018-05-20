@@ -64,7 +64,7 @@ class DatabaseCount extends AbstractDatabaseConstraint
      */
     public function failureDescription($table): string
     {
-        return 'FAIL!';
+        return "FAIL - $table";
     }
 
     /**

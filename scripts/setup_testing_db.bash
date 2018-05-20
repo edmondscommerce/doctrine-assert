@@ -15,7 +15,7 @@ readonly dbName='doctrine_assert_test';
 function execMysql {
     local query=$1;
 
-    mysql -u root --password=${dbRootPass} -e ${query};
+    mysql -u root --password=${dbRootPass} -e "${query}";
 }
 
 function createDb {
@@ -37,7 +37,7 @@ function createUser {
     execMysql "FLUSH PRIVILEGES";
 }
 
-createDb ${dbName};
+createDb "${dbName}";
 
-createUser ${dbUser} ${dbPass} 'localhost' ${dbName};
-createUser ${dbUser} ${dbPass} '127.0.0.1' ${dbName};
+createUser "${dbUser}" "${dbPass}" 'localhost' "${dbName}";
+createUser "${dbUser}" "${dbPass}" '127.0.0.1' "${dbName}";

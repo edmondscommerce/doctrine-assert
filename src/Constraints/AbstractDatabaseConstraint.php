@@ -2,6 +2,7 @@
 
 namespace BenRowan\DoctrineAssert\Constraints;
 
+use BenRowan\DoctrineAssert\Config\QueryConfigIterator;
 use BenRowan\DoctrineAssert\Exceptions\DoctrineAssertException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
@@ -47,7 +48,9 @@ abstract class AbstractDatabaseConstraint extends Constraint
     protected function addCountSelect(string $rootEntityFqn, string $rootAlias): void
     {
         $this->getQueryBuilder()
-            ->select($this->getQueryBuilder()->expr()->count($rootAlias))
+            ->select(
+                $this->getQueryBuilder()->expr()->count($rootAlias)
+            )
             ->from($rootEntityFqn, $rootAlias);
     }
 
@@ -58,7 +61,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
         string $parentAlias
     ): void {
 
-        $parentMetaData  = $this->getEntityManager()->getClassMetadata($parentEntityFqn);
+        $parentMetaData = $this->getEntityManager()->getClassMetadata($parentEntityFqn);
 
         foreach ($parentMetaData->getAssociationNames() as $associationName) {
             $targetClass = $parentMetaData->getAssociationTargetClass($associationName);
@@ -76,13 +79,17 @@ abstract class AbstractDatabaseConstraint extends Constraint
             }
         }
 
-        throw new DoctrineAssertException("No association found between '$childEntityFqn' and '$parentEntityFqn'");
+        throw new DoctrineAssertException(
+            "No association found between '$childEntityFqn' and '$parentEntityFqn'"
+        );
     }
 
-    private function addWhere(string $field, $value, string $alias): void
+    private function addWhere($value, string $field, string $alias): void
     {
         $this->getQueryBuilder()
-            ->andWhere($this->getQueryBuilder()->expr()->eq("$alias.$field", ":$field"))
+            ->andWhere(
+                $this->getQueryBuilder()->expr()->eq("$alias.$field", ":$field")
+            )
             ->setParameter($field, $value);
     }
 
@@ -101,18 +108,8 @@ abstract class AbstractDatabaseConstraint extends Constraint
         );
     }
 
-    private function shift(array &$array): array
-    {
-        $value = \reset($array);
-        $key   = \key($array);
-
-        unset($array[$key]);
-
-        return [$key, $value];
-    }
-
     private function buildChildQuery(
-        array $queryConfig,
+        QueryConfigIterator $queryConfig,
         string $childEntityFqn,
         string $parentEntityFqn,
         string $parentAlias
@@ -120,29 +117,55 @@ abstract class AbstractDatabaseConstraint extends Constraint
 
         $childAlias = $this->fqnToAlias($childEntityFqn);
 
-        $this->addJoin($childEntityFqn, $childAlias, $parentEntityFqn, $parentAlias);
-        $this->buildQuery($queryConfig, $childEntityFqn, $childAlias);
+        $this->addJoin(
+            $childEntityFqn,
+            $childAlias,
+            $parentEntityFqn,
+            $parentAlias
+        );
+
+        $this->buildQuery(
+            $queryConfig,
+            $childEntityFqn,
+            $childAlias
+        );
     }
 
     protected function buildQuery(
-        array $queryConfig,
+        QueryConfigIterator $queryConfig,
         string $currentEntityFqn,
         string $currentAlias
     ): void {
 
-        if (0 === \count($queryConfig)) {
+        if (0 === $queryConfig->count()) {
             return;
         }
 
-        [$key, $value] = $this->shift($queryConfig);
+        $queryConfig->next();
 
-        if (\is_array($value)) {
-            $this->buildChildQuery($value, $key, $currentEntityFqn, $currentAlias);
+        if ($queryConfig->currentIsChildConfig()) {
+
+            $this->buildChildQuery(
+                $queryConfig->current(),
+                $queryConfig->key(),
+                $currentEntityFqn,
+                $currentAlias
+            );
+
             return;
         }
 
-        $this->addWhere($key, $value, $currentAlias);
-        $this->buildQuery($queryConfig, $currentEntityFqn, $currentAlias);
+        $this->addWhere(
+            $queryConfig->current(),
+            $queryConfig->key(),
+            $currentAlias
+        );
+
+        $this->buildQuery(
+            $queryConfig,
+            $currentEntityFqn,
+            $currentAlias
+        );
     }
 
     /**

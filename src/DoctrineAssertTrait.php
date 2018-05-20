@@ -2,6 +2,7 @@
 
 namespace BenRowan\DoctrineAssert;
 
+use BenRowan\DoctrineAssert\Config\QueryConfigIterator;
 use BenRowan\DoctrineAssert\Constraints\DatabaseCount;
 use BenRowan\DoctrineAssert\Constraints\DatabaseHas;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -19,7 +20,10 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseHas(string $rootEntityFqn, array $queryConfig): self
     {
-        $constraint = new DatabaseHas($this->getEntityManager(), $queryConfig);
+        $constraint = new DatabaseHas(
+            $this->getEntityManager(),
+            new QueryConfigIterator($queryConfig)
+        );
 
         /* @var TestCase $this */
         $this->assertThat(
@@ -40,14 +44,15 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseMissing(string $rootEntityFqn, array $queryConfig): self
     {
-        $constraint = new LogicalNot(
-            new DatabaseHas($this->getEntityManager(), $queryConfig)
+        $constraint = new DatabaseHas(
+            $this->getEntityManager(),
+            new QueryConfigIterator($queryConfig)
         );
 
         /* @var TestCase $this */
         $this->assertThat(
             $rootEntityFqn,
-            $constraint
+            new LogicalNot($constraint)
         );
 
         return $this;
@@ -56,6 +61,7 @@ trait DoctrineAssertTrait
     /**
      * Assert that the database has exactly $count entities with this data.
      *
+     * @param int $count
      * @param string $rootEntityFqn
      * @param array $queryConfig
      *
@@ -63,7 +69,11 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseCount(int $count, string $rootEntityFqn, array $queryConfig): self
     {
-        $constraint = new DatabaseCount($this->getEntityManager(), $queryConfig, $count);
+        $constraint = new DatabaseCount(
+            $this->getEntityManager(),
+            new QueryConfigIterator($queryConfig),
+            $count
+        );
 
         /* @var TestCase $this */
         $this->assertThat(

@@ -19,10 +19,9 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseHas(string $rootEntityFqn, array $queryConfig): self
     {
-        /* @var TestCase $this */
-
         $constraint = new DatabaseHas($this->getEntityManager(), $queryConfig);
 
+        /* @var TestCase $this */
         $this->assertThat(
             $rootEntityFqn,
             $constraint
@@ -41,12 +40,11 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseMissing(string $rootEntityFqn, array $queryConfig): self
     {
-        /* @var TestCase $this */
-
         $constraint = new LogicalNot(
             new DatabaseHas($this->getEntityManager(), $queryConfig)
         );
 
+        /* @var TestCase $this */
         $this->assertThat(
             $rootEntityFqn,
             $constraint
@@ -65,10 +63,9 @@ trait DoctrineAssertTrait
      */
     public function assertDatabaseCount(int $count, string $rootEntityFqn, array $queryConfig): self
     {
-        /* @var TestCase $this */
-
         $constraint = new DatabaseCount($this->getEntityManager(), $queryConfig, $count);
 
+        /* @var TestCase $this */
         $this->assertThat(
             $rootEntityFqn,
             $constraint

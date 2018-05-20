@@ -9,6 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractDoctrineTest extends TestCase
 {
+    public const DB_USER = 'test';
+    public const DB_PASS = 'password';
+    public const DB_HOST = 'localhost';
+    public const DB_NAME = 'doctrine_assert_test';
+
     /**
      * @var EntityManager
      */
@@ -36,10 +41,10 @@ abstract class AbstractDoctrineTest extends TestCase
 
         $connection = [
             'driver'   => 'pdo_mysql',
-            'user'     => $_ENV['DB_USER'],
-            'password' => $_ENV['DB_PASS'],
-            'host'     => $_ENV['DB_HOST'],
-            'dbname'   => $_ENV['DB_NAME']
+            'user'     => self::DB_USER,
+            'password' => self::DB_PASS,
+            'host'     => self::DB_HOST,
+            'dbname'   => self::DB_NAME
         ];
 
         $this->entityManager = EntityManager::create($connection, $config);

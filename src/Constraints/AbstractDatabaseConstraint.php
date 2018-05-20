@@ -99,7 +99,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
      * @param string $fqn
      * @return mixed
      */
-    private function fqnToAlias(string $fqn)
+    protected function fqnToAlias(string $fqn)
     {
         return str_replace(
             '\\',
@@ -169,13 +169,15 @@ abstract class AbstractDatabaseConstraint extends Constraint
     }
 
     /**
-     * The number of matches for the current query.
+     * The number of results for the current query.
+     *
+     * @note To use this method you must be using an addCountSelect() select.
      *
      * @return int
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    protected function matchCount(): int
+    protected function resultCount(): int
     {
         return (int) $this->getQueryBuilder()
             ->getQuery()

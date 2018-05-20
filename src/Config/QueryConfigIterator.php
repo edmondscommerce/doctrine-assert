@@ -7,7 +7,7 @@ namespace BenRowan\DoctrineAssert\Config;
  *
  *
  *
- * Note: This iterator consumes the provided query config.
+ * @note This iterator consumes the provided query config.
  *       This means it can only be iterated through once.
  *
  * @package BenRowan\DoctrineAssert\Config
@@ -115,5 +115,15 @@ class QueryConfigIterator implements \Iterator, \Countable
     public function count(): int
     {
         return \count($this->queryConfig);
+    }
+
+    /**
+     * Returns a JSON representation of the current query config state.
+     *
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->queryConfig, JSON_PRETTY_PRINT);
     }
 }

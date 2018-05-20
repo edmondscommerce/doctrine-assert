@@ -4,5 +4,5 @@ namespace BenRowan\DoctrineAssert\Constraints;
 
 class DatabaseHas extends AbstractDatabaseConstraint
 {
-
+    private $queryConfig;
 }

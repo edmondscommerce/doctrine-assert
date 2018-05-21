@@ -1,6 +1,13 @@
 {
-  "type": "project",
+  "name": "ben-rowan/doctrine-assert",
+  "description": "A collection of PHPUnit database assertions based on Doctrine2",
+  "type": "library",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Ben Rowan"
+    }
+  ],
   "require": {
     "php": "^7.1",
     "phpunit/phpunit": "^7.1",

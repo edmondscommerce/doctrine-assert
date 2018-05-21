@@ -2,38 +2,43 @@
 
 namespace BenRowan\DoctrineAssert\Tests\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * @ORM\Entity
+ * @Entity
  */
 class EntityTwo
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Column(type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @Column(type="boolean")
      */
     private $active;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Column(type="integer", nullable=true)
      */
     private $numberOfThings;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", inversedBy="two")
-     * @ORM\JoinColumn(nullable=false)
+     * @ManyToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", inversedBy="two")
+     * @JoinColumn(nullable=false)
      */
     private $rootEntity;
 

@@ -4,48 +4,54 @@ namespace BenRowan\DoctrineAssert\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
- * @ORM\Entity
+ * @Entity
  */
 class EntityOne
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Id()
+     * @GeneratedValue
+     * @Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Column(type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @Column(type="boolean")
      */
     private $active;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Column(type="integer", nullable=true)
      */
     private $numberOfThings;
 
     /**
-     * @ORM\OneToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", mappedBy="one", cascade={"persist", "remove"})
+     * @OneToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", mappedBy="one", cascade={"persist", "remove"})
      */
     private $rootEntity;
 
     /**
-     * @ORM\OneToOne(targetEntity="EntityOneOne", inversedBy="entityOne", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @OneToOne(targetEntity="EntityOneOne", inversedBy="entityOne", cascade={"persist", "remove"})
+     * @JoinColumn(nullable=false)
      */
     private $oneOne;
 
     /**
-     * @ORM\OneToMany(targetEntity="EntityOneTwo", mappedBy="entityOne")
+     * @OneToMany(targetEntity="EntityOneTwo", mappedBy="entityOne")
      */
     private $oneTwo;
 

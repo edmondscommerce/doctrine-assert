@@ -2,37 +2,41 @@
 
 namespace BenRowan\DoctrineAssert\Tests\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\OneToOne;
 
 /**
- * @ORM\Entity
+ * @Entity
  */
 class EntityOneOne
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Column(type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @Column(type="boolean")
      */
     private $active;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Column(type="integer", nullable=true)
      */
     private $numberOfThings;
 
     /**
-     * @ORM\OneToOne(targetEntity="EntityOne", mappedBy="oneOne", cascade={"persist", "remove"})
+     * @OneToOne(targetEntity="EntityOne", mappedBy="oneOne", cascade={"persist", "remove"})
      */
     private $entityOne;
 

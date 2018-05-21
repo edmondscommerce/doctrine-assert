@@ -4,33 +4,39 @@ namespace BenRowan\DoctrineAssert\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
- * @ORM\Entity
+ * @Entity
  */
 class RootEntity
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Column(type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="EntityOne", inversedBy="rootEntity", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @OneToOne(targetEntity="EntityOne", inversedBy="rootEntity", cascade={"persist", "remove"})
+     * @JoinColumn(nullable=false)
      */
     private $one;
 
     /**
-     * @ORM\OneToMany(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\EntityTwo", mappedBy="rootEntity")
+     * @OneToMany(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\EntityTwo", mappedBy="rootEntity")
      */
     private $two;
 

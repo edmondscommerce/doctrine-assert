@@ -32,9 +32,9 @@ class EntityOneOne
     private $numberOfThings;
 
     /**
-     * @ORM\OneToOne(targetEntity="EntityOne", mappedBy="oneOneOne", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="EntityOne", mappedBy="oneOne", cascade={"persist", "remove"})
      */
-    private $entityOneOne;
+    private $entityOne;
 
     public function getId()
     {
@@ -77,18 +77,18 @@ class EntityOneOne
         return $this;
     }
 
-    public function getEntityOneOne(): ?EntityOne
+    public function getEntityOne(): ?EntityOne
     {
-        return $this->entityOneOne;
+        return $this->entityOne;
     }
 
-    public function setEntityOneOne(EntityOne $entityOneOne): self
+    public function setEntityOne(EntityOne $entityOne): self
     {
-        $this->entityOneOne = $entityOneOne;
+        $this->entityOne = $entityOne;
 
         // set the owning side of the relation if necessary
-        if ($this !== $entityOneOne->getOneOneOne()) {
-            $entityOneOne->setOneOneOne($this);
+        if ($this !== $entityOne->getOneOne()) {
+            $entityOne->setOneOne($this);
         }
 
         return $this;

@@ -34,24 +34,24 @@ class EntityOne
     private $numberOfThings;
 
     /**
-     * @ORM\OneToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", mappedBy="oneOne", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", mappedBy="one", cascade={"persist", "remove"})
      */
     private $rootEntity;
 
     /**
-     * @ORM\OneToOne(targetEntity="EntityOneOne", inversedBy="entityOneOne", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="EntityOneOne", inversedBy="entityOne", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $oneOneOne;
+    private $oneOne;
 
     /**
-     * @ORM\OneToMany(targetEntity="EntityOneTwo", mappedBy="entityOneOne")
+     * @ORM\OneToMany(targetEntity="EntityOneTwo", mappedBy="entityOne")
      */
-    private $oneOneTwo;
+    private $oneTwo;
 
     public function __construct()
     {
-        $this->oneOneTwo = new ArrayCollection();
+        $this->oneTwo = new ArrayCollection();
     }
 
     public function getId()
@@ -105,21 +105,21 @@ class EntityOne
         $this->rootEntity = $rootEntity;
 
         // set the owning side of the relation if necessary
-        if ($this !== $rootEntity->getOneOne()) {
-            $rootEntity->setOneOne($this);
+        if ($this !== $rootEntity->getOne()) {
+            $rootEntity->setOne($this);
         }
 
         return $this;
     }
 
-    public function getOneOneOne(): ?EntityOneOne
+    public function getOneOne(): ?EntityOneOne
     {
-        return $this->oneOneOne;
+        return $this->oneOne;
     }
 
-    public function setOneOneOne(EntityOneOne $oneOneOne): self
+    public function setOneOne(EntityOneOne $oneOne): self
     {
-        $this->oneOneOne = $oneOneOne;
+        $this->oneOne = $oneOne;
 
         return $this;
     }
@@ -127,28 +127,28 @@ class EntityOne
     /**
      * @return Collection|EntityTwo[]
      */
-    public function getOneOneTwo(): Collection
+    public function getOneTwo(): Collection
     {
-        return $this->oneOneTwo;
+        return $this->oneTwo;
     }
 
-    public function addOneOneTwo(EntityTwo $oneOneTwo): self
+    public function addOneTwo(EntityOneTwo $oneTwo): self
     {
-        if (!$this->oneOneTwo->contains($oneOneTwo)) {
-            $this->oneOneTwo[] = $oneOneTwo;
-            $oneOneTwo->setEntityOneOne($this);
+        if (!$this->oneTwo->contains($oneTwo)) {
+            $this->oneTwo[] = $oneTwo;
+            $oneTwo->setEntityOne($this);
         }
 
         return $this;
     }
 
-    public function removeOneOneTwo(EntityTwo $oneOneTwo): self
+    public function removeOneTwo(EntityOneTwo $oneTwo): self
     {
-        if ($this->oneOneTwo->contains($oneOneTwo)) {
-            $this->oneOneTwo->removeElement($oneOneTwo);
+        if ($this->oneTwo->contains($oneTwo)) {
+            $this->oneTwo->removeElement($oneTwo);
             // set the owning side to null (unless already changed)
-            if ($oneOneTwo->getEntityOneOne() === $this) {
-                $oneOneTwo->setEntityOneOne(null);
+            if ($oneTwo->getEntityOne() === $this) {
+                $oneTwo->setEntityOne(null);
             }
         }
 

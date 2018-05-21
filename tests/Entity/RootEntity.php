@@ -27,16 +27,16 @@ class RootEntity
      * @ORM\OneToOne(targetEntity="EntityOne", inversedBy="rootEntity", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $oneOne;
+    private $one;
 
     /**
-     * @ORM\OneToMany(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\EntityOneTwo", mappedBy="rootEntity")
+     * @ORM\OneToMany(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\EntityTwo", mappedBy="rootEntity")
      */
-    private $oneTwo;
+    private $two;
 
     public function __construct()
     {
-        $this->oneTwo = new ArrayCollection();
+        $this->two = new ArrayCollection();
     }
 
     public function getId()
@@ -56,14 +56,14 @@ class RootEntity
         return $this;
     }
 
-    public function getOneOne(): ?EntityOne
+    public function getOne(): ?EntityOne
     {
-        return $this->oneOne;
+        return $this->one;
     }
 
-    public function setOneOne(EntityOne $oneOne): self
+    public function setOne(EntityOne $one): self
     {
-        $this->oneOne = $oneOne;
+        $this->one = $one;
 
         return $this;
     }
@@ -71,28 +71,28 @@ class RootEntity
     /**
      * @return Collection|EntityTwo[]
      */
-    public function getOneTwo(): Collection
+    public function getTwo(): Collection
     {
-        return $this->oneTwo;
+        return $this->two;
     }
 
-    public function addOneTwo(EntityTwo $oneTwo): self
+    public function addTwo(EntityTwo $two): self
     {
-        if (!$this->oneTwo->contains($oneTwo)) {
-            $this->oneTwo[] = $oneTwo;
-            $oneTwo->setRootEntity($this);
+        if (!$this->two->contains($two)) {
+            $this->two[] = $two;
+            $two->setRootEntity($this);
         }
 
         return $this;
     }
 
-    public function removeOneTwo(EntityTwo $oneTwo): self
+    public function removeTwo(EntityTwo $two): self
     {
-        if ($this->oneTwo->contains($oneTwo)) {
-            $this->oneTwo->removeElement($oneTwo);
+        if ($this->two->contains($two)) {
+            $this->two->removeElement($two);
             // set the owning side to null (unless already changed)
-            if ($oneTwo->getRootEntity() === $this) {
-                $oneTwo->setRootEntity(null);
+            if ($two->getRootEntity() === $this) {
+                $two->setRootEntity(null);
             }
         }
 

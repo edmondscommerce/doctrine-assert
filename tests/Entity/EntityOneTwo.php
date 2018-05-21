@@ -32,10 +32,10 @@ class EntityOneTwo
     private $numberOfThings;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EntityOne", inversedBy="oneOneTwo")
+     * @ORM\ManyToOne(targetEntity="EntityOne", inversedBy="oneTwo")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $entityOneOne;
+    private $entityOne;
 
     public function getId()
     {
@@ -78,14 +78,14 @@ class EntityOneTwo
         return $this;
     }
 
-    public function getEntityOneOne(): ?EntityOne
+    public function getEntityOne(): ?EntityOne
     {
-        return $this->entityOneOne;
+        return $this->entityOne;
     }
 
-    public function setEntityOneOne(?EntityOne $entityOneOne): self
+    public function setEntityOne(?EntityOne $entityOne): self
     {
-        $this->entityOneOne = $entityOneOne;
+        $this->entityOne = $entityOne;
 
         return $this;
     }

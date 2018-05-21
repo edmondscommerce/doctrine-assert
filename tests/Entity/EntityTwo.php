@@ -32,7 +32,7 @@ class EntityTwo
     private $numberOfThings;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", inversedBy="oneTwo")
+     * @ORM\ManyToOne(targetEntity="BenRowan\DoctrineAssert\Tests\Entity\RootEntity", inversedBy="two")
      * @ORM\JoinColumn(nullable=false)
      */
     private $rootEntity;

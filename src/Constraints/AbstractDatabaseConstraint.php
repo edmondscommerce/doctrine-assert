@@ -96,16 +96,26 @@ abstract class AbstractDatabaseConstraint extends Constraint
     /**
      * Converts an entity fully qualified name (FQN) into a DQL alias.
      *
+     * This method can also take a parents alias. This parent alias becomes
+     * the namespace for the new child alias.
+     *
      * @param string $fqn
+     * @param null|string $parentAlias
      * @return mixed
      */
-    protected function fqnToAlias(string $fqn)
+    protected function fqnToAlias(string $fqn, ?string $parentAlias = null)
     {
-        return str_replace(
+        $childAlias = str_replace(
             '\\',
             '_',
             $fqn
         );
+
+        if (null === $parentAlias) {
+            return $childAlias;
+        }
+
+        return $parentAlias . '_' . $childAlias;
     }
 
     private function buildChildQuery(
@@ -115,7 +125,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
         string $parentAlias
     ): void {
 
-        $childAlias = $this->fqnToAlias($childEntityFqn);
+        $childAlias = $this->fqnToAlias($childEntityFqn, $parentAlias);
 
         $this->addJoin(
             $childEntityFqn,

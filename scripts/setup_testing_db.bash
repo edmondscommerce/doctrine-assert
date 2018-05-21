@@ -41,3 +41,5 @@ createDb "${dbName}";
 
 createUser "${dbUser}" "${dbPass}" 'localhost' "${dbName}";
 createUser "${dbUser}" "${dbPass}" '127.0.0.1' "${dbName}";
+
+../vendor/bin/doctrine orm:schema-tool:update --force;

@@ -10,7 +10,7 @@ require_once 'vendor/autoload.php';
 $isDevMode = true;
 
 $config = Setup::createAnnotationMetadataConfiguration(
-    [__DIR__ . '/tests/Entity'],
+    [__DIR__ . '/tests'],
     $isDevMode
 );
 

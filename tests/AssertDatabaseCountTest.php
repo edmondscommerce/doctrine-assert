@@ -2,8 +2,12 @@
 
 namespace BenRowan\DoctrineAssert\Tests;
 
+use BenRowan\DoctrineAssert\DoctrineAssertTrait;
+
 class AssertDatabaseCountTest extends AbstractDoctrineTest
 {
+    use DoctrineAssertTrait;
+
     public function testAssertsCorrectCount(): void
     {
 

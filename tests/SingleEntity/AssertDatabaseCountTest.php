@@ -8,6 +8,16 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
 {
     use DoctrineAssertTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    protected function getFixturePath(): string
+    {
+        return realpath(__DIR__ . '/fixture');
+    }
+
     public function testAssertsCorrectCount(): void
     {
 

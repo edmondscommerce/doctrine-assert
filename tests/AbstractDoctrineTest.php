@@ -188,6 +188,7 @@ abstract class AbstractDoctrineTest extends TestCase
         }
 
         $schemaTool = new SchemaTool($this->getEntityManager());
+        $schemaTool->dropDatabase();
         $schemaTool->createSchema($allMetadata);
     }
 }

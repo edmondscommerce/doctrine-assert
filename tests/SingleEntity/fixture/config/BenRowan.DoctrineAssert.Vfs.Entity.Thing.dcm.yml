@@ -1,6 +1,5 @@
-BenRowan\DoctrineAssert\Tests\Thing:
+BenRowan\DoctrineAssert\Vfs\Entity\Thing:
   type: entity
-  repositoryClass: BenRowan\DoctrineAssert\Tests\ThingRepository
   table: thing
   id:
     id:

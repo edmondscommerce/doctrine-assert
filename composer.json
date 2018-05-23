@@ -11,16 +11,19 @@
   "require": {
     "php": "^7.1",
     "phpunit/phpunit": "^7.1",
-    "doctrine/orm": "^2.6"
+    "doctrine/orm": "^2.6",
+    "fzaninotto/faker": "^1.7"
   },
   "autoload": {
     "psr-4": {
-      "BenRowan\\DoctrineAssert\\": "src/"
+      "BenRowan\\DoctrineAssert\\": "src/",
+      "BenRowan\\DoctrineAssert\\Vfs\\": "vfs://root/src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "BenRowan\\DoctrineAssert\\Tests\\": "tests/"
+      "BenRowan\\DoctrineAssert\\Tests\\": "tests/",
+      "BenRowan\\DoctrineAssert\\Vfs\\": "vfs://root/src/"
     }
   },
   "require-dev": {

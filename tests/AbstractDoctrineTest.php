@@ -4,10 +4,13 @@ namespace BenRowan\DoctrineAssert\Tests;
 
 use Doctrine\ORM\Tools\DisconnectedClassMetadataFactory;
 use Doctrine\ORM\Tools\EntityGenerator;
+use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
+use org\bovigo\vfs\visitor\vfsStreamPrintVisitor;
 use PHPUnit\Framework\TestCase;
 
 
@@ -42,6 +45,10 @@ abstract class AbstractDoctrineTest extends TestCase
         $this->setupVfs();
         $this->setupEntityManager();
         $this->generateEntities();
+        vfsStream::inspect(new vfsStreamPrintVisitor());
+        rename('vfs://root/src/Entity/BenRowan/DoctrineAssert/Vfs/Entity/Thing.php', 'vfs://root/src/Entity/Thing.php');
+        require_once('vfs://root/src/Entity/Thing.php');
+        vfsStream::inspect(new vfsStreamPrintVisitor());
         $this->updateSchema();
     }
 
@@ -81,7 +88,8 @@ abstract class AbstractDoctrineTest extends TestCase
 
         $connection = [
             'driver' => 'pdo_sqlite',
-            'path'   => $this->rootDir->url() . self::DB_PATH
+//            'path'   => $this->rootDir->url() . self::DB_PATH
+            'memory'   => true
         ];
 
         $this->entityManager = EntityManager::create($connection, $config);
@@ -131,8 +139,22 @@ abstract class AbstractDoctrineTest extends TestCase
         $entityGenerator->generate($allMetadata, $destinationPath);
     }
 
+    /**
+     * @throws \Doctrine\ORM\Tools\ToolsException
+     */
     private function updateSchema(): void
     {
+        $allMetadata = $this->getEntityManager()
+            ->getMetadataFactory()
+            ->getAllMetadata();
 
+        if (empty($allMetadata)) {
+            throw new \InvalidArgumentException(
+                'You need to configure a set of entity fixtures for this test'
+            );
+        }
+
+        $schemaTool = new SchemaTool($this->getEntityManager());
+        $schemaTool->createSchema($allMetadata);
     }
 }

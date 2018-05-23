@@ -1,4 +1,4 @@
-BenRowan\DoctrineAssert\Vfs\Entity\Thing:
+Vfs\SingleEntity\Thing:
   type: entity
   table: thing
   id:

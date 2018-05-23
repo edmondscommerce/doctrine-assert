@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace BenRowan\DoctrineAssert\Tests\SingleEntity;
+namespace BenRowan\DoctrineAssert\Tests\AnotherEntity;
 
 use BenRowan\DoctrineAssert\DoctrineAssertTrait;
 use BenRowan\DoctrineAssert\Tests\AbstractDoctrineTest;
@@ -9,7 +9,7 @@ use Faker\ORM\Doctrine\Populator;
 
 class AssertDatabaseCountTest extends AbstractDoctrineTest
 {
-    public const VFS_NAMESPACE = 'Vfs\\SingleEntity\\';
+    public const VFS_NAMESPACE = 'Vfs\\AnotherEntity\\';
 
     use DoctrineAssertTrait;
 
@@ -27,7 +27,7 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getEntityManager());
-        $populator->addEntity('Vfs\\SingleEntity\\Thing', 100);
+        $populator->addEntity('Vfs\\AnotherEntity\\Thing', 100);
         $populator->execute();
     }
 

@@ -1,0 +1,14 @@
+Vfs\AnotherEntity\Thing:
+  type: entity
+  table: thing
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean

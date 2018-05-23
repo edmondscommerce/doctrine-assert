@@ -7,18 +7,18 @@ use Doctrine\ORM\Tools\EntityGenerator;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Faker\Factory;
+use Faker\ORM\Doctrine\Populator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStreamFile;
 use org\bovigo\vfs\visitor\vfsStreamPrintVisitor;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 
 
 abstract class AbstractDoctrineTest extends TestCase
 {
-    public const ENTITY_PATH = '/src/Entity';
     public const CONFIG_PATH = '/config';
-    public const DB_PATH     = '/db.sqlite';
 
     public const ENTITY_GEN_GENERATE_ANNOTATIONS = true;
     public const ENTITY_GEN_GENERATE_METHODS     = true;
@@ -43,16 +43,18 @@ abstract class AbstractDoctrineTest extends TestCase
     public function setUp()
     {
         $this->setupVfs();
+//        vfsStream::inspect(new vfsStreamPrintVisitor());
         $this->setupEntityManager();
         $this->generateEntities();
-        vfsStream::inspect(new vfsStreamPrintVisitor());
-        rename('vfs://root/src/Entity/BenRowan/DoctrineAssert/Vfs/Entity/Thing.php', 'vfs://root/src/Entity/Thing.php');
-        require_once('vfs://root/src/Entity/Thing.php');
-        vfsStream::inspect(new vfsStreamPrintVisitor());
+//        vfsStream::inspect(new vfsStreamPrintVisitor());
+        $this->requireEntities();
         $this->updateSchema();
+        $this->loadFixtures();
     }
 
-    abstract protected function getFixturePath(): string;
+    abstract protected function getVfsPath(): string;
+
+    abstract protected function loadFixtures();
 
     public function getRootDir()
     {
@@ -63,7 +65,7 @@ abstract class AbstractDoctrineTest extends TestCase
     {
         $this->rootDir = vfsStream::setup();
 
-        vfsStream::copyFromFileSystem($this->getFixturePath());
+        vfsStream::copyFromFileSystem($this->getVfsPath());
     }
 
     /**
@@ -88,8 +90,7 @@ abstract class AbstractDoctrineTest extends TestCase
 
         $connection = [
             'driver' => 'pdo_sqlite',
-//            'path'   => $this->rootDir->url() . self::DB_PATH
-            'memory'   => true
+            'memory' => true
         ];
 
         $this->entityManager = EntityManager::create($connection, $config);
@@ -103,11 +104,11 @@ abstract class AbstractDoctrineTest extends TestCase
 
         if (empty($allMetadata)) {
             throw new \InvalidArgumentException(
-                'You need to configure a set of entity fixtures for this test'
+                'You need to configure a set of entity Fixtures for this test'
             );
         }
 
-        $destinationPath = $this->rootDir->url() . self::ENTITY_PATH;
+        $destinationPath = $this->rootDir->url();
 
         if (! file_exists($destinationPath)) {
             throw new \InvalidArgumentException(
@@ -139,6 +140,38 @@ abstract class AbstractDoctrineTest extends TestCase
         $entityGenerator->generate($allMetadata, $destinationPath);
     }
 
+    private function removeYmlFileExtension($fileName)
+    {
+        $extensionLen = strlen('.dcm.yml');
+        return substr($fileName, 0, -$extensionLen);
+    }
+
+    private function ymlFileNameToPath($fileName)
+    {
+        return str_replace('.', '/', $fileName) . '.php';
+    }
+
+    private function ymlFileNameToVfsPath($fileName)
+    {
+        $vfsRoot = $this->getRootDir()->url();
+
+        return $vfsRoot . '/' . $this->ymlFileNameToPath($this->removeYmlFileExtension($fileName));
+    }
+
+    private function requireEntities()
+    {
+        $finder = new Finder();
+
+        $finder->files()->in($this->getVfsPath() . self::CONFIG_PATH);
+
+        foreach ($finder as $file) {
+            $name       = $file->getFilename();
+            $entityPath = $this->ymlFileNameToVfsPath($name);
+
+            require_once $entityPath;
+        }
+    }
+
     /**
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
@@ -150,7 +183,7 @@ abstract class AbstractDoctrineTest extends TestCase
 
         if (empty($allMetadata)) {
             throw new \InvalidArgumentException(
-                'You need to configure a set of entity fixtures for this test'
+                'You need to configure a set of entity Fixtures for this test'
             );
         }
 

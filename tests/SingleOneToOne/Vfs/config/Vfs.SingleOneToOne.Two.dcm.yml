@@ -1,6 +1,6 @@
-Vfs\SingleEntity\Thing:
+Vfs\SingleOneToOne\Two:
   type: entity
-  table: thing
+  table: two
   id:
     id:
       type: integer

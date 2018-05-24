@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace BenRowan\DoctrineAssert\Tests\SingleEntity;
+namespace BenRowan\DoctrineAssert\Tests\Single;
 
 use BenRowan\DoctrineAssert\DoctrineAssertTrait;
 use BenRowan\DoctrineAssert\Tests\AbstractDoctrineTest;
@@ -9,7 +9,7 @@ use Faker\ORM\Doctrine\Populator;
 
 class AssertDatabaseCountTest extends AbstractDoctrineTest
 {
-    public const VFS_NAMESPACE = 'Vfs\\SingleEntity\\';
+    public const VFS_NAMESPACE = 'Vfs\\Single\\';
 
     use DoctrineAssertTrait;
 

@@ -7,11 +7,8 @@ use Doctrine\ORM\Tools\EntityGenerator;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
-use Faker\Factory;
-use Faker\ORM\Doctrine\Populator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\visitor\vfsStreamPrintVisitor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -49,12 +46,9 @@ abstract class AbstractDoctrineTest extends TestCase
 //        vfsStream::inspect(new vfsStreamPrintVisitor());
         $this->requireEntities();
         $this->updateSchema();
-        $this->loadFixtures();
     }
 
     abstract protected function getVfsPath(): string;
-
-    abstract protected function loadFixtures();
 
     public function getRootDir()
     {

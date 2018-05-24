@@ -1,0 +1,14 @@
+Vfs\DoubleOneToOne\Three:
+  type: entity
+  table: three
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean

@@ -22,6 +22,11 @@ class DatabaseCount extends AbstractDatabaseConstraint
      */
     private $count;
 
+    /**
+     * @var int
+     */
+    private $resultCount;
+
     public function __construct(
         EntityManager $entityManager,
         QueryConfigIterator $queryConfig,
@@ -53,18 +58,26 @@ class DatabaseCount extends AbstractDatabaseConstraint
             $rootAlias
         );
 
-        return $this->count === $this->resultCount();
+        $this->resultCount = $this->resultCount();
+
+        return $this->count === $this->resultCount;
     }
 
     /**
      * Returns a description of the failure.
      *
-     * @param  string  $table
+     * @param  string  $rootEntityFqn
      * @return string
      */
-    public function failureDescription($table): string
+    public function failureDescription($rootEntityFqn): string
     {
-        return "FAIL - $table";
+        return sprintf(
+            "expected count %d matches actual count %d for '%s'.\n\nQuery config:\n\n%s\n\n",
+            $this->count,
+            $this->resultCount,
+            $rootEntityFqn,
+            $this->toString()
+        );
     }
 
     /**

@@ -1,0 +1,14 @@
+Vfs\SingleOneToOne\Two:
+  type: entity
+  table: two
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean

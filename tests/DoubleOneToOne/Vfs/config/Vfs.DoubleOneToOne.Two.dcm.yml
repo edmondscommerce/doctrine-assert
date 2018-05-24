@@ -1,0 +1,17 @@
+Vfs\DoubleOneToOne\Two:
+  type: entity
+  table: two
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean
+  oneToOne:
+    three:
+      targetEntity: Three

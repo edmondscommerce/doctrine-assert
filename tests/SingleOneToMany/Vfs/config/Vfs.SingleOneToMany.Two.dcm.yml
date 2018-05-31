@@ -1,6 +1,6 @@
-Vfs\ValueBeforeJoin\One:
+Vfs\SingleOneToMany\Two:
   type: entity
-  table: one
+  table: two
   id:
     id:
       type: integer
@@ -12,7 +12,7 @@ Vfs\ValueBeforeJoin\One:
       length: 50
     active:
       type: boolean
-  oneToMany:
-    two:
-      targetEntity: Two
-      mappedBy: one
+  manyToOne:
+    one:
+      targetEntity: One
+      inversedBy: two

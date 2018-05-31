@@ -2,9 +2,9 @@
 
 namespace BenRowan\DoctrineAssert\Dql\AssertJoin;
 
+use BenRowan\DoctrineAssert\Exceptions\DoctrineAssertException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Runner\Exception;
 use Doctrine\ORM\Query\Expr\Join;
 
 class AssertJoin implements AssertJoinInterface
@@ -81,7 +81,7 @@ class AssertJoin implements AssertJoinInterface
             }
         }
 
-        throw new Exception(
+        throw new DoctrineAssertException(
             "No mapping found for '$childEntityFqn' and '$parentEntityFqn'"
         );
     }

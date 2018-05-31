@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace BenRowan\DoctrineAssert\Dql\Join;
+namespace BenRowan\DoctrineAssert\Dql\AssertJoin;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -88,7 +88,7 @@ class AssertJoin implements AssertJoinInterface
 
     private function buildJoin(array $mapping, string $childEntityFqn, string $childAlias): void
     {
-        $condition = $this->buildCondition($mapping);
+        $condition = $this->buildJoinCondition($mapping);
 
         $this->queryBuilder->join(
             $childEntityFqn,
@@ -98,7 +98,7 @@ class AssertJoin implements AssertJoinInterface
         );
     }
 
-    private function buildCondition(array $mapping)
+    private function buildJoinCondition(array $mapping)
     {
         $ownedByAlias    = $mapping['ownedByAlias'];
         $inversedByAlias = $mapping['inversedByAlias'];

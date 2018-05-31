@@ -3,8 +3,8 @@
 namespace BenRowan\DoctrineAssert\Constraints;
 
 use BenRowan\DoctrineAssert\Config\QueryConfigIterator;
-use BenRowan\DoctrineAssert\Dql\Join\AssertJoin;
-use BenRowan\DoctrineAssert\Dql\Join\AssertJoinInterface;
+use BenRowan\DoctrineAssert\Dql\AssertJoin\AssertJoin;
+use BenRowan\DoctrineAssert\Dql\AssertJoin\AssertJoinInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Constraint\Constraint;

@@ -1,0 +1,18 @@
+Vfs\ValueBeforeJoin\One:
+  type: entity
+  table: one
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean
+  oneToMany:
+    two:
+      targetEntity: Two
+      mappedBy: one

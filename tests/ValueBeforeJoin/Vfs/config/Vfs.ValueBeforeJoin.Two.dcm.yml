@@ -1,0 +1,18 @@
+Vfs\ValueBeforeJoin\Two:
+  type: entity
+  table: two
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 50
+    active:
+      type: boolean
+  manyToOne:
+    one:
+      targetEntity: One
+      inversedBy: two

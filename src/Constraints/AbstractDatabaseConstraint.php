@@ -3,9 +3,9 @@
 namespace BenRowan\DoctrineAssert\Constraints;
 
 use BenRowan\DoctrineAssert\Config\QueryConfigIterator;
-use BenRowan\DoctrineAssert\Exceptions\DoctrineAssertException;
+use BenRowan\DoctrineAssert\Dql\AssertJoin\AssertJoin;
+use BenRowan\DoctrineAssert\Dql\AssertJoin\AssertJoinInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Constraint\Constraint;
 
@@ -21,12 +21,18 @@ abstract class AbstractDatabaseConstraint extends Constraint
      */
     private $entityManager;
 
+    /**
+     * @var AssertJoinInterface
+     */
+    private $join;
+
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->queryBuilder  = $entityManager->createQueryBuilder();
+        $this->join          = new AssertJoin($this->queryBuilder, $this->entityManager);
     }
 
     /**
@@ -52,36 +58,6 @@ abstract class AbstractDatabaseConstraint extends Constraint
                 $this->getQueryBuilder()->expr()->count($rootAlias)
             )
             ->from($rootEntityFqn, $rootAlias);
-    }
-
-    private function addJoin(
-        string $childEntityFqn,
-        string $childAlias,
-        string $parentEntityFqn,
-        string $parentAlias
-    ): void {
-
-        $parentMetaData = $this->getEntityManager()->getClassMetadata($parentEntityFqn);
-
-        foreach ($parentMetaData->getAssociationNames() as $associationName) {
-            $targetClass = $parentMetaData->getAssociationTargetClass($associationName);
-
-            if ($childEntityFqn === $targetClass) {
-                $this->getQueryBuilder()
-                    ->join(
-                        $childEntityFqn,
-                        $childAlias,
-                        Join::WITH,
-                        "$childAlias = $parentAlias.$associationName"
-                    );
-
-                return;
-            }
-        }
-
-        throw new DoctrineAssertException(
-            "No association found between '$childEntityFqn' and '$parentEntityFqn'"
-        );
     }
 
     private function addWhere($value, string $field, string $alias): void
@@ -127,7 +103,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
 
         $childAlias = $this->fqnToAlias($childEntityFqn, $parentAlias);
 
-        $this->addJoin(
+        $this->join->add(
             $childEntityFqn,
             $childAlias,
             $parentEntityFqn,

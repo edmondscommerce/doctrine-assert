@@ -25,7 +25,11 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
 
     public function testSettingNoQueryConfigReturnsAllResults(): void
     {
-        $this->createSettingNoQueryConfigReturnsAllResultsFixtures();
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getEntityManager());
+
+        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 100);
+        $populator->execute();
 
         $this->assertDatabaseCount(
             100,
@@ -34,18 +38,20 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
         );
     }
 
-    private function createSettingNoQueryConfigReturnsAllResultsFixtures(): void
+    public function testSettingSingleQueryConfigConstraintReturnsCorrectCount(): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getEntityManager());
 
-        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 100);
+        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
+            'active' => false
+        ]);
         $populator->execute();
-    }
 
-    public function testSettingSingleQueryConfigConstraintReturnsCorrectCount(): void
-    {
-        $this->createSettingSingleQueryConfigConstraintReturnsCorrectCountFixtures();
+        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
+            'active' => true
+        ]);
+        $populator->execute();
 
         $this->assertDatabaseCount(
             50,
@@ -64,25 +70,34 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
         );
     }
 
-    private function createSettingSingleQueryConfigConstraintReturnsCorrectCountFixtures(): void
+    public function testSettingDoubleQueryConfigConstraintReturnsCorrectCount(): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getEntityManager());
 
         $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return false; }
+            'active' => true,
+            'name'   => 'Aomame'
         ]);
         $populator->execute();
 
         $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return true; }
+            'active' => true,
+            'name'   => 'Tamaru'
         ]);
         $populator->execute();
-    }
 
-    public function testSettingDoubleQueryConfigConstraintReturnsCorrectCount(): void
-    {
-        $this->createSettingDoubleQueryConfigConstraintReturnsCorrectCountFixtures();
+        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
+            'active' => false,
+            'name'   => 'Tengo'
+        ]);
+        $populator->execute();
+
+        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
+            'active' => false,
+            'name'   => 'Eriko'
+        ]);
+        $populator->execute();
 
         $this->assertDatabaseCount(
             50,
@@ -119,35 +134,5 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
                 'name'   => 'Eriko'
             ]
         );
-    }
-
-    private function createSettingDoubleQueryConfigConstraintReturnsCorrectCountFixtures(): void
-    {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getEntityManager());
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return true; },
-            'name'   => function() { return 'Aomame'; }
-        ]);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return true; },
-            'name'   => function() { return 'Tamaru'; }
-        ]);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return false; },
-            'name'   => function() { return 'Tengo'; }
-        ]);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Thing', 50, [
-            'active' => function() { return false; },
-            'name'   => function() { return 'Eriko'; }
-        ]);
-        $populator->execute();
     }
 }

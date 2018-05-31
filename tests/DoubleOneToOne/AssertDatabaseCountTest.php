@@ -25,17 +25,6 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
 
     public function testSettingNoQueryConfigReturnsAllResults(): void
     {
-        $this->createSettingNoQueryConfigReturnsAllResultsFixtures();
-
-        $this->assertDatabaseCount(
-            100,
-            self::VFS_NAMESPACE . 'One',
-            []
-        );
-    }
-
-    private function createSettingNoQueryConfigReturnsAllResultsFixtures(): void
-    {
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getEntityManager());
 
@@ -44,11 +33,32 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
         $populator->addEntity(self::VFS_NAMESPACE . 'One', 100);
 
         $populator->execute();
+
+        $this->assertDatabaseCount(
+            100,
+            self::VFS_NAMESPACE . 'One',
+            []
+        );
     }
 
     public function testSettingSingleQueryConfigConstraintOnThirdEntityReturnsCorrectCount(): void
     {
-        $this->createSettingSingleQueryConfigConstraintOnThirdEntityReturnsCorrectCountFixtures();
+        $generator = Factory::create();
+        $populator = new Populator($generator, $this->getEntityManager());
+
+        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
+            'active' => true
+        ]);
+        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
+        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
+        $populator->execute();
+
+        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
+            'active' => false
+        ]);
+        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
+        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
+        $populator->execute();
 
         $this->assertDatabaseCount(
             50,
@@ -75,29 +85,42 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
         );
     }
 
-    private function createSettingSingleQueryConfigConstraintOnThirdEntityReturnsCorrectCountFixtures(): void
+    public function testSettingDoubleQueryConfigConstraintOnThirdEntityReturnsCorrectCount(): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $this->getEntityManager());
 
         $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return true; }
+            'active' => true,
+            'name'   => 'Aomame'
         ]);
         $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
         $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
         $populator->execute();
 
         $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return false; }
+            'active' => true,
+            'name'   => 'Tamaru'
         ]);
         $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
         $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
         $populator->execute();
-    }
 
-    public function testSettingDoubleQueryConfigConstraintOnThirdEntityReturnsCorrectCount(): void
-    {
-        $this->createSettingDoubleQueryConfigConstraintOnThirdEntityReturnsCorrectCountFixtures();
+        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
+            'active' => false,
+            'name'   => 'Tengo'
+        ]);
+        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
+        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
+        $populator->execute();
+
+        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
+            'active' => false,
+            'name'   => 'Eriko'
+        ]);
+        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
+        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
+        $populator->execute();
 
         $this->assertDatabaseCount(
             50,
@@ -150,43 +173,5 @@ class AssertDatabaseCountTest extends AbstractDoctrineTest
                 ]
             ]
         );
-    }
-
-    private function createSettingDoubleQueryConfigConstraintOnThirdEntityReturnsCorrectCountFixtures(): void
-    {
-        $generator = Factory::create();
-        $populator = new Populator($generator, $this->getEntityManager());
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return true; },
-            'name'   => function() { return 'Aomame'; }
-        ]);
-        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
-        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return true; },
-            'name'   => function() { return 'Tamaru'; }
-        ]);
-        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
-        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return false; },
-            'name'   => function() { return 'Tengo'; }
-        ]);
-        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
-        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
-        $populator->execute();
-
-        $populator->addEntity(self::VFS_NAMESPACE . 'Three', 50, [
-            'active' => function() { return false; },
-            'name'   => function() { return 'Eriko'; }
-        ]);
-        $populator->addEntity(self::VFS_NAMESPACE . 'Two', 50);
-        $populator->addEntity(self::VFS_NAMESPACE . 'One', 50);
-        $populator->execute();
     }
 }

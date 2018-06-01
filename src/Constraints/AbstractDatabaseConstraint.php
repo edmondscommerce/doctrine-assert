@@ -62,11 +62,13 @@ abstract class AbstractDatabaseConstraint extends Constraint
 
     private function addWhere($value, string $field, string $alias): void
     {
+        $placeholder = $alias . '_' . $field;
+
         $this->getQueryBuilder()
             ->andWhere(
-                $this->getQueryBuilder()->expr()->eq("$alias.$field", ":$field")
+                $this->getQueryBuilder()->expr()->eq("$alias.$field", ":$placeholder")
             )
-            ->setParameter($field, $value);
+            ->setParameter($placeholder, $value);
     }
 
     /**
@@ -137,15 +139,16 @@ abstract class AbstractDatabaseConstraint extends Constraint
                 $currentEntityFqn,
                 $currentAlias
             );
-
-            return;
         }
 
-        $this->addWhere(
-            $queryConfig->current(),
-            $queryConfig->key(),
-            $currentAlias
-        );
+        if ($queryConfig->currentIsValue()) {
+
+            $this->addWhere(
+                $queryConfig->current(),
+                $queryConfig->key(),
+                $currentAlias
+            );
+        }
 
         $this->buildQuery(
             $queryConfig,

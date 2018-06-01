@@ -50,6 +50,16 @@ class QueryConfigIterator implements \Iterator, \Countable
     }
 
     /**
+     * Returns true if the current config value represents a value of the current entity.
+     *
+     * @return bool
+     */
+    public function currentIsValue(): bool
+    {
+        return ! \is_array($this->current);
+    }
+
+    /**
      * Returns the current field.
      *
      * @return string

@@ -134,25 +134,25 @@ abstract class AbstractDoctrineTest extends TestCase
         $entityGenerator->generate($allMetadata, $destinationPath);
     }
 
-    private function removeYmlFileExtension($fileName)
+    private function removeYmlFileExtension($fileName): string
     {
         $extensionLen = strlen('.dcm.yml');
         return substr($fileName, 0, -$extensionLen);
     }
 
-    private function ymlFileNameToPath($fileName)
+    private function ymlFileNameToPath($fileName): string
     {
         return str_replace('.', '/', $fileName) . '.php';
     }
 
-    private function ymlFileNameToVfsPath($fileName)
+    private function ymlFileNameToVfsPath($fileName): string
     {
         $vfsRoot = $this->getRootDir()->url();
 
         return $vfsRoot . '/' . $this->ymlFileNameToPath($this->removeYmlFileExtension($fileName));
     }
 
-    private function requireEntities()
+    private function requireEntities(): void
     {
         $finder = new Finder();
 

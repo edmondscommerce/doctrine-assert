@@ -82,7 +82,7 @@ class AssertJoin implements AssertJoinInterface
         }
 
         throw new DoctrineAssertException(
-            "No mapping found for '$childEntityFqn' and '$parentEntityFqn'"
+            "No mapping found for '$parentEntityFqn' with '$childEntityFqn'"
         );
     }
 

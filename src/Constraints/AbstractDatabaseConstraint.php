@@ -60,9 +60,18 @@ abstract class AbstractDatabaseConstraint extends Constraint
             ->from($rootEntityFqn, $rootAlias);
     }
 
+    private function cleanAlias(string $dirtyAlias): string
+    {
+        return \str_replace(
+            ['\\', '.'],
+            '_',
+            $dirtyAlias
+        );
+    }
+    
     private function addWhere($value, string $field, string $alias): void
     {
-        $placeholder = $alias . '_' . $field;
+        $placeholder = $alias . '_' . $this->cleanAlias($field);
 
         $this->getQueryBuilder()
             ->andWhere(
@@ -83,11 +92,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
      */
     protected function fqnToAlias(string $fqn, ?string $parentAlias = null)
     {
-        $childAlias = str_replace(
-            '\\',
-            '_',
-            $fqn
-        );
+        $childAlias = $this->cleanAlias($fqn);
 
         if (null === $parentAlias) {
             return $childAlias;

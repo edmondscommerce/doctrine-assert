@@ -28,7 +28,7 @@ class DatabaseCount extends AbstractDatabaseConstraint
     private $resultCount;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         QueryConfigIterator $queryConfig,
         int $count
     ) {

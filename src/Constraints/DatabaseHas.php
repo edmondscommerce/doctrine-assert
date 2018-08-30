@@ -3,7 +3,7 @@
 namespace BenRowan\DoctrineAssert\Constraints;
 
 use BenRowan\DoctrineAssert\Config\QueryConfigIterator;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseHas extends AbstractDatabaseConstraint
 {

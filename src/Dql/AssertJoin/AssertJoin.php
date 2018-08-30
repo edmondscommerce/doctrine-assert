@@ -3,7 +3,7 @@
 namespace BenRowan\DoctrineAssert\Dql\AssertJoin;
 
 use BenRowan\DoctrineAssert\Exceptions\DoctrineAssertException;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 
@@ -15,7 +15,7 @@ class AssertJoin implements AssertJoinInterface
 
     public function __construct(
         QueryBuilder $queryBuilder,
-        EntityManager $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->queryBuilder  = $queryBuilder;
         $this->entityManager = $entityManager;

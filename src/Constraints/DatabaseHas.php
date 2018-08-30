@@ -18,7 +18,7 @@ class DatabaseHas extends AbstractDatabaseConstraint
     private $queryConfigJson;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         QueryConfigIterator $queryConfig
     ) {
         parent::__construct($entityManager);

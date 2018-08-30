@@ -26,7 +26,7 @@ abstract class AbstractDatabaseConstraint extends Constraint
      */
     private $join;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         parent::__construct();
 

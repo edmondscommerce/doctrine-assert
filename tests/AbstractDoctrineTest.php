@@ -15,14 +15,14 @@ use Symfony\Component\Finder\Finder;
 
 abstract class AbstractDoctrineTest extends TestCase
 {
-    public const CONFIG_PATH = '/config';
+    final public const CONFIG_PATH = '/config';
 
-    public const ENTITY_GEN_GENERATE_ANNOTATIONS = true;
-    public const ENTITY_GEN_GENERATE_METHODS     = true;
-    public const ENTITY_GEN_REGENERATE_ENTITIES  = true;
-    public const ENTITY_GEN_UPDATE_ENTITIES      = false;
-    public const ENTITY_GEN_NUM_SPACES           = 4;
-    public const ENTITY_GEN_BACKUP_EXISTING      = false;
+    final public const ENTITY_GEN_GENERATE_ANNOTATIONS = true;
+    final public const ENTITY_GEN_GENERATE_METHODS     = true;
+    final public const ENTITY_GEN_REGENERATE_ENTITIES  = true;
+    final public const ENTITY_GEN_UPDATE_ENTITIES      = false;
+    final public const ENTITY_GEN_NUM_SPACES           = 4;
+    final public const ENTITY_GEN_BACKUP_EXISTING      = false;
 
     /**
      * @var EntityManager
@@ -37,7 +37,7 @@ abstract class AbstractDoctrineTest extends TestCase
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->setupVfs();
 //        vfsStream::inspect(new vfsStreamPrintVisitor());
@@ -137,12 +137,12 @@ abstract class AbstractDoctrineTest extends TestCase
     private function removeYmlFileExtension($fileName): string
     {
         $extensionLen = strlen('.dcm.yml');
-        return substr($fileName, 0, -$extensionLen);
+        return substr((string) $fileName, 0, -$extensionLen);
     }
 
     private function ymlFileNameToPath($fileName): string
     {
-        return str_replace('.', '/', $fileName) . '.php';
+        return str_replace('.', '/', (string) $fileName) . '.php';
     }
 
     private function ymlFileNameToVfsPath($fileName): string

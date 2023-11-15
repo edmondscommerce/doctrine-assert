@@ -7,36 +7,17 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseCount extends AbstractDatabaseConstraint
 {
-    /**
-     * @var QueryConfigIterator
-     */
-    private $queryConfig;
+    private readonly string $queryConfigJson;
 
-    /**
-     * @var string
-     */
-    private $queryConfigJson;
-
-    /**
-     * @var int
-     */
-    private $count;
-
-    /**
-     * @var int
-     */
-    private $resultCount;
+    private ?int $resultCount = null;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        QueryConfigIterator $queryConfig,
-        int $count
+        private readonly QueryConfigIterator $queryConfig,
+        private readonly int $count
     ) {
         parent::__construct($entityManager);
-
-        $this->queryConfig     = $queryConfig;
         $this->queryConfigJson = $queryConfig->toJson();
-        $this->count           = $count;
     }
 
     /**

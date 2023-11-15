@@ -9,16 +9,8 @@ use Doctrine\ORM\Query\Expr\Join;
 
 class AssertJoin implements AssertJoinInterface
 {
-    private $queryBuilder;
-
-    private $entityManager;
-
-    public function __construct(
-        QueryBuilder $queryBuilder,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->queryBuilder  = $queryBuilder;
-        $this->entityManager = $entityManager;
+    public function __construct(private readonly QueryBuilder $queryBuilder, private readonly EntityManagerInterface $entityManager)
+    {
     }
 
     public function add(
@@ -55,9 +47,7 @@ class AssertJoin implements AssertJoinInterface
 
         $owningSideMappings = array_filter(
             $allMappings,
-            function ($associationMapping) {
-                return $associationMapping['isOwningSide'];
-            }
+            fn($associationMapping) => $associationMapping['isOwningSide']
         );
 
         foreach ($owningSideMappings as $mapping) {
@@ -105,9 +95,7 @@ class AssertJoin implements AssertJoinInterface
         $fieldName       = $mapping['mapping']['fieldName'];
 
         $conditions = array_map(
-            function (array $joinColumn) use ($ownedByAlias, $inversedByAlias, $fieldName) {
-                return "$ownedByAlias.{$joinColumn['referencedColumnName']} = $inversedByAlias.$fieldName";
-            },
+            fn(array $joinColumn) => "$ownedByAlias.{$joinColumn['referencedColumnName']} = $inversedByAlias.$fieldName",
             $mapping['mapping']['joinColumns']
         );
 

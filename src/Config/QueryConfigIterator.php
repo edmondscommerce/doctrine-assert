@@ -14,10 +14,7 @@ namespace BenRowan\DoctrineAssert\Config;
  */
 class QueryConfigIterator implements \Iterator, \Countable
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private int|string|null $key = null;
 
     /**
      * @var mixed
@@ -25,18 +22,12 @@ class QueryConfigIterator implements \Iterator, \Countable
     private $current;
 
     /**
-     * @var array
-     */
-    private $queryConfig;
-
-    /**
      * QueryConfigIterator constructor.
      *
      * @param array $queryConfig The query config to be iterated.
      */
-    public function __construct(array $queryConfig)
+    public function __construct(private array $queryConfig)
     {
-        $this->queryConfig = $queryConfig;
     }
 
     /**

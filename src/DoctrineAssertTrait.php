@@ -13,8 +13,6 @@ trait DoctrineAssertTrait
     /**
      * Assert that the database has one or more entities with this data.
      *
-     * @param string $rootEntityFqn
-     * @param array $queryConfig
      *
      * @return $this
      */
@@ -37,8 +35,6 @@ trait DoctrineAssertTrait
     /**
      * Asset that the database has no entities with this data.
      *
-     * @param string $rootEntityFqn
-     * @param array $queryConfig
      *
      * @return $this
      */
@@ -61,9 +57,6 @@ trait DoctrineAssertTrait
     /**
      * Assert that the database has exactly $count entities with this data.
      *
-     * @param int $count
-     * @param string $rootEntityFqn
-     * @param array $queryConfig
      *
      * @return $this
      */

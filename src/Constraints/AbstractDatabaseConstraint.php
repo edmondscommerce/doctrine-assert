@@ -17,20 +17,12 @@ abstract class AbstractDatabaseConstraint extends Constraint
     private $queryBuilder;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var AssertJoinInterface
      */
-    private $join;
+    private readonly \BenRowan\DoctrineAssert\Dql\AssertJoin\AssertJoin $join;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        parent::__construct();
-
-        $this->entityManager = $entityManager;
         $this->queryBuilder  = $entityManager->createQueryBuilder();
         $this->join          = new AssertJoin($this->queryBuilder, $this->entityManager);
     }
@@ -86,7 +78,6 @@ abstract class AbstractDatabaseConstraint extends Constraint
      * This method can also take a parents alias. This parent alias becomes
      * the namespace for the new child alias.
      *
-     * @param string $fqn
      * @param null|string $parentAlias
      * @return mixed
      */

@@ -7,23 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseHas extends AbstractDatabaseConstraint
 {
-    /**
-     * @var QueryConfigIterator
-     */
-    private $queryConfig;
-
-    /**
-     * @var string
-     */
-    private $queryConfigJson;
+    private readonly string $queryConfigJson;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        QueryConfigIterator $queryConfig
+        private readonly QueryConfigIterator $queryConfig
     ) {
         parent::__construct($entityManager);
-
-        $this->queryConfig     = $queryConfig;
         $this->queryConfigJson = $queryConfig->toJson();
     }
 

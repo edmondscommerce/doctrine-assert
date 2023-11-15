@@ -9,7 +9,7 @@ use Faker\ORM\Doctrine\Populator;
 
 class AssertDatabaseCountTest extends AbstractDoctrineTest
 {
-    public const VFS_NAMESPACE = 'Vfs\\DoubleOneToOne\\';
+    final public const VFS_NAMESPACE = 'Vfs\\DoubleOneToOne\\';
 
     use DoctrineAssertTrait;
 
